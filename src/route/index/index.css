@@ -1,0 +1,12 @@
+.index-route .delete-index {
+	cursor: pointer;
+}
+
+.index-route .delete-index:hover {
+	color: red;
+}
+
+.index-route .ui.table thead th {
+	cursor: pointer;
+	-webkit-user-select: none;
+}

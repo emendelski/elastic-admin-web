@@ -1,0 +1,43 @@
+<!doctype html>
+<html ng-app="ElasticAdminWeb">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="elasticsearch admin web">
+		<meta name="keywords" content="elasticsearch">
+		<title>Elastic Admin Web</title>
+
+		<link rel="stylesheet" href="lib/semantic-ui/dist/semantic.css">
+		<!-- build:css public/index.min.css -->
+		<link rel="stylesheet" href="lib/angular-hotkeys/build/hotkeys.css">
+		<link rel="stylesheet" href="src/route/index/index.css">
+		<!-- endbuild -->
+
+		<!-- <link rel="icon" type="image/x-icon" href="/favicon.ico"> -->
+	</head>
+	<body class="milkr">
+		<div ui-view class="full-fill"></div>
+
+		<script src="lib/jquery/dist/jquery.js"></script>
+		<script src="lib/angular/angular.js"></script>
+		<script src="lib/semantic-ui/dist/semantic.js"></script>
+
+		<!-- build:js public/index.min.js -->
+		<script src="lib/angular-hotkeys/build/hotkeys.js"></script>
+		<script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
+
+		<script src="src/config/app.js"></script>
+		<script src="src/config/appInject.js"></script>
+		<script src="src/config/route.js"></script>
+		<script src="src/filter/humanSize.js"></script>
+		<script src="src/route/index/index.js"></script>
+		<script src="src/service/Elastic.js"></script>
+		<script src="src/service/Version.js"></script>
+
+		<!-- >
+		<script src="tmp/angular-template.tmp.js"></script>
+		<! -->
+		<!-- endbuild -->
+	</body>
+</html>

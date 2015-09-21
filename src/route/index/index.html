@@ -1,0 +1,84 @@
+<div class="index-route" style="font-size: 1.2em; text-align: center;">
+	<div>
+		<a ui-sref="index">ElasticAdminWeb {{Version.config.version}}</a>
+		<span class="ui icon input"
+			ng-class="{'loading': loadingStatsIndices}">
+			<input
+				placeholder="http://localhost:9200"
+				style="width: 20em;"
+				ng-keyup="onKeyup($event)"
+				ng-model="Elastic.url"/>
+			<i class="icon"></i>
+		</span>
+		<button class="ui blue button"
+			hotkey="{'r': reloadStatsIndices}"
+			hotkey-description="Reconnect elastic"
+			ng-click="reloadStatsIndices()">Connect</button>
+	</div>
+	<div class="ui segment" style="min-height: 10em; display: inline-block;">
+		<table class="ui celled table">
+			<thead>
+				<tr>
+					<th>Indices</th>
+					<th>Shards</th>
+					<th>Docs</th>
+					<th>Size</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>{{statsIndices.length}}</td>
+					<td>{{stats._shards.successful}}/{{stats._shards.total}}</td>
+					<td>{{stats._all.total.docs.count | number}}</td>
+					<td>{{stats._all.total.store.size_in_bytes | humanSize}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="ui celled table">
+			<thead>
+				<tr>
+					<th ng-click="setStatsIndicesOrderBy('index')">
+						<span>Index</span>
+						<i class="caret icon"
+							ng-class="{
+								'up': statsIndicesOrderBy === 'index',
+								'down': statsIndicesOrderBy === '-index'
+							}"></i>
+					</th>
+					<th ng-click="setStatsIndicesOrderBy('docs')">
+						<span>Docs</span>
+						<i class="caret icon"
+							ng-class="{
+								'up': statsIndicesOrderBy === 'docs',
+								'down': statsIndicesOrderBy === '-docs'
+							}"></i>
+					</th>
+					<th ng-click="setStatsIndicesOrderBy('size')">
+						<span>Primary Size</span>
+						<i class="caret icon"
+							ng-class="{
+								'up': statsIndicesOrderBy === 'size',
+								'down': statsIndicesOrderBy === '-size'
+							}"></i>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="idx in statsIndices | orderBy:statsIndicesOrderBy">
+					<td>
+						<span>{{idx.index}}</span>
+						<i class="delete-index remove circle outline icon"
+							title="Delete index from elastic"
+							ng-click="deleteIndex(idx.index)"></i>
+					</td>
+					<td>{{idx.total.docs.count | number}}</td>
+					<td>{{idx.primaries.store.size_in_bytes | humanSize}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="ui dimmer"
+			ng-class="{'active': loadingStatsIndices}">
+			<div class="ui large text loader">Loading</div>
+		</div>
+	</div>
+</div>
