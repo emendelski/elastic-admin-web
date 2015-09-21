@@ -34,6 +34,11 @@
 				</tr>
 			</tbody>
 		</table>
+		<div class="ui fluid icon input">
+			<input placeholder="Index Filter ..." ng-model="statsIndicesFilter"/>
+			<i class="remove circle outline link icon"
+				ng-click="statsIndicesFilter=''"></i>
+		</div>
 		<table class="ui celled table">
 			<thead>
 				<tr>
@@ -64,7 +69,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="idx in statsIndices | orderBy:statsIndicesOrderBy">
+				<tr ng-repeat="idx in statsIndices | filter:statsIndicesFilter | orderBy:statsIndicesOrderBy track by $index">
 					<td>
 						<span>{{idx.index}}</span>
 						<i class="delete-index remove circle outline icon"

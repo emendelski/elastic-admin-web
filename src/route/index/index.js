@@ -32,6 +32,7 @@
 		$scope.Elastic = Elastic;
 		$scope.Version = Version;
 		$scope.statsIndicesOrderBy = "index";
+		$scope.statsIndicesFilter = "";
 
 		function getParamUrl() {
 			return unescape($stateParams.url || "") || "http://localhost:9200";
