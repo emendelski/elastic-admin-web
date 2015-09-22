@@ -24,9 +24,9 @@
 
 	}
 
-	Controller.$inject = ["$scope", "$location", "$stateParams"
+	Controller.$inject = ["$scope", "$q", "$location", "$stateParams"
 	, "Elastic", "Version"];
-	function    Controller($scope,   $location,   $stateParams
+	function    Controller($scope,   $q,   $location,   $stateParams
 	,  Elastic,   Version) {
 
 		$scope.Elastic = Elastic;
@@ -59,25 +59,38 @@
 			}
 
 			$scope.loadingStatsIndices = true;
-			return Elastic.stats()
-				.then(function(res) {
-					$scope.stats = res.data;
-					$scope.statsIndices = [];
-					angular.forEach(res.data.indices, function(idx, name) {
-						idx.index = name;
-						idx.docs = idx.total.docs.count;
-						idx.size = idx.primaries.store.size_in_bytes;
-						$scope.statsIndices.push(idx);
-					});
-				})
-				.finally(function() {
-					$scope.loadingStatsIndices = false;
+			return $q.all([
+				Elastic.stats(),
+				Elastic.clusterState()
+			])
+			.then(function(res) {
+				$scope.stats = res[0].data;
+				$scope.clusterState = res[1].data;
+				$scope.statsIndices = [];
+				angular.forEach($scope.stats.indices, function(idx, name) {
+					idx.index = name;
+					idx.docs = idx.total.docs.count;
+					idx.size = idx.primaries.store.size_in_bytes;
+					idx.metadata = angular.copy($scope.clusterState.metadata.indices[name]);
+					$scope.statsIndices.push(idx);
 				});
+			})
+			.finally(function() {
+				$scope.loadingStatsIndices = false;
+			});
 		}
 
-		$scope.onKeyup = function(ev) {
+		$scope.onFilterKeyup = function(ev) {
 			if (ev.keyCode === 13) {
 				reloadStatsIndices();
+			}
+		};
+
+		$scope.onReplicaKeyup = function(ev, idx, indexForm) {
+			if (ev.keyCode === 13) {
+				angular.element(ev.target).blur();
+				Elastic.setIndexNumberOfReplicas(idx.index, idx.metadata.settings.index.number_of_replicas)
+					.then(reloadStatsIndices);
 			}
 		};
 

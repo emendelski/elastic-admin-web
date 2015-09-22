@@ -6,7 +6,7 @@
 			<input
 				placeholder="http://localhost:9200"
 				style="width: 20em;"
-				ng-keyup="onKeyup($event)"
+				ng-keyup="onFilterKeyup($event)"
 				ng-model="Elastic.url"/>
 			<i class="icon"></i>
 		</span>
@@ -66,6 +66,8 @@
 								'down': statsIndicesOrderBy === '-size'
 							}"></i>
 					</th>
+					<th>Shards</th>
+					<th>Replicas</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -78,6 +80,17 @@
 					</td>
 					<td>{{idx.total.docs.count | number}}</td>
 					<td>{{idx.primaries.store.size_in_bytes | humanSize}}</td>
+					<td>{{idx.metadata.settings.index.number_of_shards}}</td>
+					<td>
+						<span class="ui transparent fluid input"
+							ng-class="{
+								'yellow message': idx.metadata.settings.index.number_of_replicas !== clusterState.metadata.indices[idx.index].settings.index.number_of_replicas
+							}">
+							<input
+								ng-keyup="onReplicaKeyup($event, idx, indexForm)"
+								ng-model="idx.metadata.settings.index.number_of_replicas"/>
+						</span>
+					</td>
 				</tr>
 			</tbody>
 		</table>

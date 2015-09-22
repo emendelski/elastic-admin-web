@@ -10,3 +10,7 @@
 	cursor: pointer;
 	-webkit-user-select: none;
 }
+
+.index-route .ui.message {
+	padding: 0px;
+}
