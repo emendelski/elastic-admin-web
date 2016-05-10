@@ -1,0 +1,68 @@
+<div ng-if="snapshotRepo" class="ui container grid">
+	<div class="centered row">
+		<div ng-if="!snapshotRepo && !loading" class="ui eight wide column center aligned warning message">
+			<div class="header" style="padding-top: 0.6em; padding-bottom: 0.6em;">Elastic info is not yet ready!</div>
+		</div>
+	</div>
+	<div class="centered row">
+		<div class="ui segment" style="min-height: 10em;">
+			<label style="margin-bottom: 0.5em; display: block;">
+				<span>Snapshot repository:</span>
+				<select ng-model="snapshotRepo">
+					<option ng-repeat="(name, snap) in snapshotRepoData track by name" value="{{name}}">{{name}}</option>
+				</select>
+			</label>
+			<div class="ui fluid icon input">
+				<input placeholder="Index Filter ..." ng-model="snapshotFilter"
+					ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"/>
+				<i class="remove circle outline link icon"
+					ng-click="snapshotFilter=''"></i>
+			</div>
+			<table class="ui celled table">
+				<thead>
+					<tr>
+						<th ng-click="elasticSnapshot.setSnapshotOrderBy('snapshot')">
+							<span>Snapshot</span>
+							<i class="caret icon"
+								ng-class="{
+									'up': snapshotOrderBy === 'snapshot',
+									'down': snapshotOrderBy === '-snapshot'
+								}"></i>
+						</th>
+						<th>
+							<span>Indices</span>
+						</th>
+						<th ng-click="elasticSnapshot.setSnapshotOrderBy('state')">
+							<span>State</span>
+							<i class="caret icon"
+								ng-class="{
+									'up': snapshotOrderBy === 'state',
+									'down': snapshotOrderBy === '-state'
+								}"></i>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="snapshot in snapshotAll.snapshots | filter:snapshotFilter | orderBy:snapshotOrderBy track by $index">
+						<td>
+							<span>{{snapshot.snapshot}}</span>
+							<i class="delete-index remove circle outline icon"
+								title="Delete index from elastic"
+								ng-click="elasticSnapshot.deleteSnapshot(snapshot.snapshot)"></i>
+						</td>
+						<td>
+							<select>
+								<option ng-repeat="idx in snapshot.indices">{{idx}}</option>
+							</select>
+						</td>
+						<td>{{snapshot.state}}</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="ui dimmer"
+				ng-class="{'active': loading}">
+				<div class="ui large text loader">Loading</div>
+			</div>
+		</div>
+	</div>
+</div>

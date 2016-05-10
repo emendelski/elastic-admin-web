@@ -39,6 +39,21 @@
 		};
 		/* eslint-enable camelcase */
 
+		Elastic.prototype.snapshot = function() {
+			var url = this.url.replace(/\/+$/, "") + "/_snapshot";
+			return $http.get(url);
+		};
+
+		Elastic.prototype.snapshotAll = function(indices) {
+			var url = this.url.replace(/\/+$/, "") + "/_snapshot/" + indices + "/_all";
+			return $http.get(url);
+		};
+
+		Elastic.prototype.deleteSnapshot = function(repo, snapshot) {
+			var url = this.url.replace(/\/+$/, "") + "/_snapshot/" + repo + "/" + snapshot;
+			return $http.delete(url);
+		};
+
 		return new Elastic();
 	}
 

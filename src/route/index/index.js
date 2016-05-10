@@ -36,8 +36,9 @@
 			return unescape($stateParams.url || "") || "http://localhost:9200";
 		}
 
-		$scope.reloadStatsIndices = function() {
+		$scope.reload = function() {
 			$scope.$broadcast("reloadElasticIndices");
+			$scope.$broadcast("reloadElasticSnapshot");
 		};
 
 		$scope.onElasticURLKeyup = function(ev) {
@@ -47,14 +48,14 @@
 					$stateParams.url = Elastic.url;
 					return $location.search($stateParams).replace();
 				}
-				$scope.reloadStatsIndices();
+				$scope.reload();
 				break;
 			}
 		};
 
 		Elastic.url = getParamUrl();
 		$timeout(function() {
-			$scope.reloadStatsIndices();
+			$scope.reload();
 		});
 
 	}

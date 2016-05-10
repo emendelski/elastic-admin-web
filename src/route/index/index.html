@@ -13,10 +13,11 @@
 			<i class="icon"></i>
 		</span>
 		<button class="ui blue button"
-			hotkey="{'r': reloadStatsIndices}"
+			hotkey="{'r': reload}"
 			hotkey-description="Reconnect elastic"
-			ng-click="reloadStatsIndices()">Connect</button>
+			ng-click="reload()">Connect</button>
 	</div>
 
 	<elastic-indices></elastic-indices>
+	<elastic-snapshot></elastic-snapshot>
 </div>
