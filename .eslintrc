@@ -17,7 +17,7 @@
 		"angular/module-setter": 0,
 		"angular/no-digest": 1,
 		"camelcase": 1,
-		"default-case": 1,
+		"default-case": 0,
 		"dot-location": [1, "property"],
 		"indent": [1, "tab"],
 		"max-len": [1, 128, 4],

@@ -24,78 +24,38 @@
 
 	}
 
-	Controller.$inject = ["$scope", "$q", "$location", "$stateParams"
+	Controller.$inject = ["$location", "$scope", "$stateParams", "$timeout"
 	, "Elastic", "Version"];
-	function    Controller($scope,   $q,   $location,   $stateParams
+	function    Controller($location,   $scope,   $stateParams,   $timeout
 	,  Elastic,   Version) {
 
 		$scope.Elastic = Elastic;
 		$scope.Version = Version;
-		$scope.statsIndicesOrderBy = "index";
-		$scope.statsIndicesFilter = "";
 
 		function getParamUrl() {
 			return unescape($stateParams.url || "") || "http://localhost:9200";
 		}
 
-		$scope.setStatsIndicesOrderBy = function(orderby) {
-			if ($scope.statsIndicesOrderBy === orderby) {
-				$scope.statsIndicesOrderBy = "-" + orderby;
-			} else {
-				$scope.statsIndicesOrderBy = orderby;
-			}
+		$scope.reloadStatsIndices = function() {
+			$scope.$broadcast("reloadElasticIndices");
 		};
 
-		$scope.deleteIndex = function(index) {
-			Elastic.deleteIndex(index)
-				.then(reloadStatsIndices);
-		};
-
-		$scope.reloadStatsIndices = reloadStatsIndices;
-		function reloadStatsIndices() {
-			if (Elastic.url !== getParamUrl()) {
-				$stateParams.url = Elastic.url;
-				return $location.search($stateParams).replace();
-			}
-
-			$scope.loadingStatsIndices = true;
-			return $q.all([
-				Elastic.stats(),
-				Elastic.clusterState()
-			])
-			.then(function(res) {
-				$scope.stats = res[0].data;
-				$scope.clusterState = res[1].data;
-				$scope.statsIndices = [];
-				angular.forEach($scope.stats.indices, function(idx, name) {
-					idx.index = name;
-					idx.docs = idx.total.docs.count;
-					idx.size = idx.primaries.store.size_in_bytes;
-					idx.metadata = angular.copy($scope.clusterState.metadata.indices[name]);
-					$scope.statsIndices.push(idx);
-				});
-			})
-			.finally(function() {
-				$scope.loadingStatsIndices = false;
-			});
-		}
-
-		$scope.onFilterKeyup = function(ev) {
-			if (ev.keyCode === 13) {
-				reloadStatsIndices();
-			}
-		};
-
-		$scope.onReplicaKeyup = function(ev, idx, indexForm) {
-			if (ev.keyCode === 13) {
-				angular.element(ev.target).blur();
-				Elastic.setIndexNumberOfReplicas(idx.index, idx.metadata.settings.index.number_of_replicas)
-					.then(reloadStatsIndices);
+		$scope.onElasticURLKeyup = function(ev) {
+			switch (ev.keyCode) {
+			case 13: // [ENTER]
+				if (Elastic.url !== getParamUrl()) {
+					$stateParams.url = Elastic.url;
+					return $location.search($stateParams).replace();
+				}
+				$scope.reloadStatsIndices();
+				break;
 			}
 		};
 
 		Elastic.url = getParamUrl();
-		reloadStatsIndices();
+		$timeout(function() {
+			$scope.reloadStatsIndices();
+		});
 
 	}
 

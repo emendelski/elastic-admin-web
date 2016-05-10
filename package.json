@@ -38,7 +38,10 @@
   "author": "tsaikd <tsaikd@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "init": "npm install && bower --allow-root install && gulp build"
+    "init": "npm install && bower --allow-root install && gulp build",
+    "dev": "gulp dev",
+    "bower": "bower",
+    "gulp": "gulp"
   },
   "main": "index.html"
 }

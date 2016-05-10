@@ -4,9 +4,9 @@ set -e
 
 rm -rf public tmp
 npm install
-bower install
-gulp profile-inject
-gulp build
+npm run bower -- --allow-root install
+npm run gulp -- profile-inject
+npm run gulp -- build
 git checkout src/config/appInject.js
 git add -f index.html lib public
 version="$(cat package.json | grep version | awk -F\" '{print $4}')"
