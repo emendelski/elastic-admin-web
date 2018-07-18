@@ -66,9 +66,13 @@
 		};
 
 		$ctrl.deleteSnapshot = function(snapshotName) {
+			$scope.deleting = true;
 			return Elastic.deleteSnapshot($scope.snapshotRepo, snapshotName)
 				.then(function() {
 					return $ctrl.reloadSnapshotAll($scope.snapshotRepo);
+				})
+				.then(function() {
+					$scope.deleting = false;
 				});
 		};
 
