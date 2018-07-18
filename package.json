@@ -1,6 +1,6 @@
 {
   "name": "elastic-admin-web",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "devDependencies": {
     "bower": "^1.5",
     "dateformat": "^1.0.11",
