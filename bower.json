@@ -1,9 +1,0 @@
-{
-  "name": "elastic-admin-web",
-  "dependencies": {
-    "angular": "~1.4.6",
-    "angular-hotkeys": "chieffancypants/angular-hotkeys#~1.4.5",
-    "angular-ui-router": "~0.2.15",
-    "semantic-ui": "~2.1.4"
-  }
-}

@@ -1,15 +1,21 @@
 .DS_Store
-/node_modules/
-/lib/**/*.gzip
-/lib/**/*.md
-/lib/**/*.yml
-/lib/**/LICENSE
-/lib/**/package.json
-/lib/**/Gruntfile*
-/lib/**/Makefile*
-*.tmp.js
+node_modules
+/dist
 
-/lib/
-/public/
-/tmp/
-/index.html
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw*
